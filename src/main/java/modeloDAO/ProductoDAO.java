@@ -63,6 +63,12 @@ public class ProductoDAO implements InterfazProductoDAO {
         String sql = "INSERT INTO producto(nombre, descripcion, unidades, costo, precio, categoria) VALUES (?, ?, ?, ?, ?, ?);";
         try {
             PreparedStatement ps = Conexion.Conectar().prepareStatement(sql);
+            ps.setString(1, producto.getNombre());
+            ps.setString(2, producto.getDescripcion());
+            ps.setInt(3, producto.getUnidades());
+            ps.setDouble(4, producto.getCosto());
+            ps.setDouble(5, producto.getPrecio());
+            ps.setString(6, producto.getCategoria());
             resultado = ps.executeUpdate();
         } catch (Exception e) {
             System.err.println("Error al agregar en la base de datos" + e);
