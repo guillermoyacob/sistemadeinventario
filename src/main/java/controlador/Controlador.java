@@ -34,7 +34,7 @@ public class Controlador extends HttpServlet {
             case "Agregar":
                 int resultado;
                 String nombre = request.getParameter("txtNombre");
-                String descripcion = request.getParameter("txtDescipcion");
+                String descripcion = request.getParameter("txtDescripcion");
                 Integer unidades = Integer.valueOf(request.getParameter("txtUnidades"));
                 Double costo = Double.valueOf(request.getParameter("txtCosto"));
                 Double precio = Double.valueOf(request.getParameter("txtPrecio"));

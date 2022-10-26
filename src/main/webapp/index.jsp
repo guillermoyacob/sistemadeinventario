@@ -26,7 +26,7 @@
                 <thead>
                     <tr>
                         <th scope="col">#</th>
-                        <th scope="col">Identidicador</th>
+                        <th scope="col">Identificador</th>
                         <th scope="col">Nombres</th>
                         <th scope="col">Descripción</th>
                         <th scope="col">Unidades</th>

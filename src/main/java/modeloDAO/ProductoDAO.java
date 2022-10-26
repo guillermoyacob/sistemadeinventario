@@ -36,7 +36,7 @@ public class ProductoDAO implements InterfazProductoDAO {
 
     @Override
     public Producto getId(int id) {
-        String sql = "SELECT * FROM PERSONA WHERE id = ?;";
+        String sql = "SELECT * FROM producto WHERE id = ?;";
         Producto producto = new Producto();
         try {
             PreparedStatement ps = Conexion.Conectar().prepareStatement(sql);
