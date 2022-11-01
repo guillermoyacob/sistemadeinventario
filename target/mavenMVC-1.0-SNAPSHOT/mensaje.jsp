@@ -16,7 +16,7 @@
     </head>
     <body>
         <div class="container mt-4">
-            <div class="${config} alert alert-danger" role="alert">
+            <div class="${config}" role="alert">
                 ${mensaje}!
             </div>
             <a href="Controlador?accion=listar">Volver</a>

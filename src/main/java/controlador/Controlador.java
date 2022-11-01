@@ -44,14 +44,52 @@ public class Controlador extends HttpServlet {
                 if (resultado != 0){
                     request.setAttribute("config", "alert alert-success");
                     request.setAttribute("mensaje", "EL PRODUCTO SE HA AGREGADO CON ÉXITO");
-                    request.getRequestDispatcher("Controlador?accion=listar").forward(request, response);
+                    request.getRequestDispatcher("mensaje.jsp").forward(request, response);
                 }else{
                     request.setAttribute("config", "alert alert-danger");
                     request.setAttribute("mensaje", "NO SE HA PODIDO GUARDAR EL PRODUCTO");
                     request.getRequestDispatcher("mensaje.jsp").forward(request, response);
                 }
                 break;
-                
+            case "Editar":
+                int id = Integer.valueOf(request.getParameter("id"));
+                Producto p = dAO.getId(id);
+                request.setAttribute("producto", p);
+                request.getRequestDispatcher("editar.jsp").forward(request, response);
+                break;
+            case "Actualizar":
+                String nombre1 = request.getParameter("txtNombre");
+                String descripcion1 = request.getParameter("txtDescripcion");
+                Integer unidades1 = Integer.valueOf(request.getParameter("txtUnidades"));
+                Double costo1 = Double.valueOf(request.getParameter("txtCosto"));
+                Double precio1 = Double.valueOf(request.getParameter("txtPrecio"));
+                String categoria1 = request.getParameter("txtCategoria");
+                int idProducto = Integer.valueOf(request.getParameter("txtId"));
+                Producto prod = new Producto (idProducto, nombre1, descripcion1, unidades1, costo1, precio1, categoria1);
+                int respuesta = dAO.update(prod);
+                if (respuesta != 0){
+                    request.setAttribute("config", "alert alert-success");
+                    request.setAttribute("mensaje", "EL PRODUCTO SE HA ACTUALIZADO CON ÉXITO");
+                    request.getRequestDispatcher("mensaje.jsp").forward(request, response);
+                }else{
+                    request.setAttribute("config", "alert alert-danger");
+                    request.setAttribute("mensaje", "NO SE HA PODIDO ACTUALIZAR EL PRODUCTO");
+                    request.getRequestDispatcher("mensaje.jsp").forward(request, response);
+                }
+                break;
+            case "Delete":
+                int idPerson = Integer.valueOf(request.getParameter("id"));
+                int res = dAO.delete(idPerson);
+                if (res != 0){
+                    request.setAttribute("config", "alert alert-warning");
+                    request.setAttribute("mensaje", "EL PRODUCTO SE HA ELIMINADO CON ÉXITO");
+                    request.getRequestDispatcher("mensaje.jsp").forward(request, response);
+                }else{
+                    request.setAttribute("config", "alert alert-danger");
+                    request.setAttribute("mensaje", "NO SE HA PODIDO ELIMINAR EL PRODUCTO");
+                    request.getRequestDispatcher("mensaje.jsp").forward(request, response);
+                }
+                break;
             default:
                 throw new AssertionError();
 

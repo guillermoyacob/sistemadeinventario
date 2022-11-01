@@ -43,13 +43,13 @@ public class ProductoDAO implements InterfazProductoDAO {
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                producto.setId(rs.getInt("id"));
-                producto.setNombre(rs.getString("nombre"));
-                producto.setDescripcion(rs.getString("descripcion"));
-                producto.setUnidades(rs.getInt("unidades"));
-                producto.setCosto(rs.getDouble("costo"));
-                producto.setPrecio(rs.getDouble("Precio"));
-                producto.setCategoria(rs.getString("categoria"));
+                producto.setId(rs.getInt(1));
+                producto.setNombre(rs.getString(2));
+                producto.setDescripcion(rs.getString(3));
+                producto.setUnidades(rs.getInt(4));
+                producto.setCosto(rs.getDouble(5));
+                producto.setPrecio(rs.getDouble(6));
+                producto.setCategoria(rs.getString(7));
             }
         } catch (SQLException e) {
             System.err.println("Error: " + e);
@@ -82,6 +82,13 @@ public class ProductoDAO implements InterfazProductoDAO {
         String sql = "UPDATE producto SET nombre = ?, descripcion = ?, unidades = ?, costo = ?, precio = ?, categoria = ? WHERE id = ?;";
         try {
             PreparedStatement ps = Conexion.Conectar().prepareStatement(sql);
+            ps.setString(1, producto.getNombre());
+            ps.setString(2, producto.getDescripcion());
+            ps.setInt(3, producto.getUnidades());
+            ps.setDouble(4, producto.getCosto());
+            ps.setDouble(5, producto.getPrecio());
+            ps.setString(6, producto.getCategoria());
+            ps.setInt(7, producto.getId());
             resultado = ps.executeUpdate();
         } catch (Exception e) {
             System.err.println("Error al agregar en la base de datos" + e);

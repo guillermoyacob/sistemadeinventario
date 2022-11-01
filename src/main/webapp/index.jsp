@@ -48,8 +48,8 @@
                             <td>${producto.precio}</td>
                             <td>${producto.categoria}</td>
                             <td>
-                                <a href="#">Editar</a>
-                                <a href="#">Eliminar</a>
+                                <a href="Controlador?accion=Editar&id=${producto.id}" class="btn btn-outline-warning">Editar</a>
+                                <a href="Controlador?accion=Delete&id=${producto.id}" class="btn btn-outline-danger">Eliminar</a>
                             </td>
                         </tr>
                     </c:forEach>
