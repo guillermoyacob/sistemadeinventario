@@ -4,9 +4,33 @@
         <servlet-name>Controlador</servlet-name>
         <servlet-class>controlador.Controlador</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Validar</servlet-name>
+        <servlet-class>controlador.Validar</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>cerrarSesion</servlet-name>
+        <servlet-class>controlador.cerrarSesion</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Auditoria</servlet-name>
+        <servlet-class>controlador.ControladorAuditoria</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Controlador</servlet-name>
         <url-pattern>/Controlador</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Validar</servlet-name>
+        <url-pattern>/Validar</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>cerrarSesion</servlet-name>
+        <url-pattern>/cerrarSesion</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Auditoria</servlet-name>
+        <url-pattern>/Auditoria</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

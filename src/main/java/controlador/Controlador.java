@@ -1,32 +1,38 @@
 package controlador;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import modelo.Auditoria;
 import modelo.Producto;
+import modelo.Usuario;
+import modeloDAO.AuditoriaDAO;
 import modeloDAO.ProductoDAO;
 
 public class Controlador extends HttpServlet {
 
-    ProductoDAO dAO;
+    ProductoDAO DaoProducto;
+    
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException {     
         
-        
+        Auditoria registro;
         String accion = request.getParameter("accion");
         List<Producto> productos = new ArrayList<>();
+        HttpSession session = request.getSession();
+            
         switch (accion) {
             case "listar":
-                dAO = new ProductoDAO();
-                productos = dAO.getProductos();
+                DaoProducto = new ProductoDAO();
+                productos = DaoProducto.getProductos();
                 request.setAttribute("Productos", productos);
-                request.getRequestDispatcher("index.jsp").forward(request, response);
+                request.getRequestDispatcher("listado.jsp").forward(request, response);
                 break;
             case "nuevo":
                 request.getRequestDispatcher("add.jsp").forward(request, response);
@@ -40,8 +46,13 @@ public class Controlador extends HttpServlet {
                 Double precio = Double.valueOf(request.getParameter("txtPrecio"));
                 String categoria = request.getParameter("txtCategoria");
                 Producto producto = new Producto(nombre, descripcion, unidades, costo, precio, categoria);
-                resultado = dAO.add(producto);
+                resultado = DaoProducto.add(producto);
                 if (resultado != 0){
+                    String nombreUsuario = (String) session.getAttribute("nombreUsuario");
+                    Integer idUsuario = (Integer) session.getAttribute("idUsuario");
+                    registro = new Auditoria(nombre, descripcion, unidades, costo, precio, categoria, idUsuario, nombreUsuario, "Agregó");
+                    AuditoriaDAO DaoAuditoria = new AuditoriaDAO();
+                    DaoAuditoria.agregarRegistro(registro);
                     request.setAttribute("config", "alert alert-success");
                     request.setAttribute("mensaje", "EL PRODUCTO SE HA AGREGADO CON ÉXITO");
                     request.getRequestDispatcher("mensaje.jsp").forward(request, response);
@@ -53,7 +64,7 @@ public class Controlador extends HttpServlet {
                 break;
             case "Editar":
                 int id = Integer.valueOf(request.getParameter("id"));
-                Producto p = dAO.getId(id);
+                Producto p = DaoProducto.getId(id);
                 request.setAttribute("producto", p);
                 request.getRequestDispatcher("editar.jsp").forward(request, response);
                 break;
@@ -66,7 +77,7 @@ public class Controlador extends HttpServlet {
                 String categoria1 = request.getParameter("txtCategoria");
                 int idProducto = Integer.valueOf(request.getParameter("txtId"));
                 Producto prod = new Producto (idProducto, nombre1, descripcion1, unidades1, costo1, precio1, categoria1);
-                int respuesta = dAO.update(prod);
+                int respuesta = DaoProducto.update(prod);
                 if (respuesta != 0){
                     request.setAttribute("config", "alert alert-success");
                     request.setAttribute("mensaje", "EL PRODUCTO SE HA ACTUALIZADO CON ÉXITO");
@@ -79,7 +90,7 @@ public class Controlador extends HttpServlet {
                 break;
             case "Delete":
                 int idPerson = Integer.valueOf(request.getParameter("id"));
-                int res = dAO.delete(idPerson);
+                int res = DaoProducto.delete(idPerson);
                 if (res != 0){
                     request.setAttribute("config", "alert alert-warning");
                     request.setAttribute("mensaje", "EL PRODUCTO SE HA ELIMINADO CON ÉXITO");
@@ -93,6 +104,8 @@ public class Controlador extends HttpServlet {
             default:
                 throw new AssertionError();
 
+        }
+        
 
 //        response.setContentType("text/html;charset=UTF-8");
 //        try ( PrintWriter out = response.getWriter()) {
@@ -108,7 +121,6 @@ public class Controlador extends HttpServlet {
 //            out.println("</html>");
             
             
-        }
     }
 
     @Override

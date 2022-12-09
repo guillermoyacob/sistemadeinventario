@@ -4,16 +4,27 @@
     Author     : Guiye
 --%>
 
+<%@page import="modelo.Usuario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="es">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Bootstrap demo</title>
+        <title>Sistema de inventario - Editar producto</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
     </head>
     <body>
+        
+        <% 
+            HttpSession sesion = request.getSession();
+            Usuario usuario = (Usuario) sesion.getAttribute("usuarioLogueado");
+            
+            if (usuario == null){
+                response.sendRedirect("index.jsp");
+            }
+        %>
+        
         <div class="container mt-4">
             <form action="Controlador" method="POST">
                 <div class="card border-info mb-4" style="width: 18rem;">
