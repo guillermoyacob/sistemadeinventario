@@ -31,6 +31,9 @@ public class ProductoDAO implements InterfazProductoDAO {
         } catch (SQLException e) {
             System.err.println("Error: " + e);
         }
+        
+        Conexion.cerrarConexion();
+        
         return productos;
     }
 
@@ -54,6 +57,9 @@ public class ProductoDAO implements InterfazProductoDAO {
         } catch (SQLException e) {
             System.err.println("Error: " + e);
         }
+        
+        Conexion.cerrarConexion();
+        
         return producto;
     }
 
@@ -73,6 +79,9 @@ public class ProductoDAO implements InterfazProductoDAO {
         } catch (Exception e) {
             System.err.println("Error al agregar en la base de datos" + e);
         }
+        
+        Conexion.cerrarConexion();
+        
         return resultado;
     }
 
@@ -93,6 +102,9 @@ public class ProductoDAO implements InterfazProductoDAO {
         } catch (Exception e) {
             System.err.println("Error al agregar en la base de datos" + e);
         }
+        
+        Conexion.cerrarConexion();
+        
         return resultado;
     }
 
@@ -106,6 +118,9 @@ public class ProductoDAO implements InterfazProductoDAO {
         } catch (Exception e) {
             System.err.println("Ha ocurrido un error durante el borrado" + e);
         }
+        
+        Conexion.cerrarConexion();
+        
         return resultado;
     }
 

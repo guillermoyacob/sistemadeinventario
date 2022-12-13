@@ -15,6 +15,12 @@ public class Usuario {
     private String contrasenia;
     private Integer administrador;
 
+    public Usuario(String nombre, String contrasenia, Integer administrador) {
+        this.nombre = nombre;
+        this.contrasenia = contrasenia;
+        this.administrador = administrador;
+    }
+    
     public Usuario(Integer id, String nombre, String contrasenia, Integer administrador) {
         this.id = id;
         this.nombre = nombre;

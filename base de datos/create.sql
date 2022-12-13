@@ -26,4 +26,4 @@ CREATE TABLE auditoria (
 	idUsuario int,
 	nombreUsuario varchar(50),
 	descripcionAccion varchar(20)
-)
+);

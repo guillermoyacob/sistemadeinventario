@@ -30,19 +30,20 @@ public class Validar extends HttpServlet {
         nombre = request.getParameter("txtNombre");
         contrasenia = request.getParameter("txtContrasenia");
         
-        Usuario usuario = DAO.getUsuario(nombre, contrasenia);
+        Usuario usuario = DAO.getUsuario(nombre);
 
         if (Objects.equals(usuario.getNombre(), nombre)) {
             
+            usuario = DAO.getUsuario(nombre, contrasenia);
+            
             if (Objects.equals(usuario.getContrasenia(), contrasenia)) {
-
-                System.out.println(usuario.getAdministrador().toString());
                 
                 HttpSession session = request.getSession();
                 session.setAttribute("usuarioLogueado", usuario);
                 session.setAttribute("idUsuario", usuario.getId());
                 session.setAttribute("nombreUsuario", usuario.getNombre());
-                request.getRequestDispatcher("listado.jsp").forward(request, response);
+                session.setAttribute("usuarioAdministrador", usuario.getAdministrador());
+                request.getRequestDispatcher("listadoProductos.jsp").forward(request, response);
                 
             } else {
                 

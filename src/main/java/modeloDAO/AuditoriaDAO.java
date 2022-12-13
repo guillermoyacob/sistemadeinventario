@@ -42,6 +42,9 @@ public class AuditoriaDAO implements InterfazAuditoriaDAO{
         } catch (SQLException e) {
             System.err.println("Error: " + e);
         }
+        
+        Conexion.cerrarConexion();
+        
         return registros;
     }   
 
@@ -64,6 +67,8 @@ public class AuditoriaDAO implements InterfazAuditoriaDAO{
         } catch (Exception e) {
             System.err.println("Error al agregar el registro en la base de datos" + e);
         }
+        
+        Conexion.cerrarConexion();
     }
     
     

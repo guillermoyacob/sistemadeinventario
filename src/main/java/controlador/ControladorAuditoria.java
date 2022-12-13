@@ -5,13 +5,14 @@
 package controlador;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import modelo.Auditoria;
 import modeloDAO.AuditoriaDAO;
 
@@ -28,14 +29,15 @@ public class ControladorAuditoria extends HttpServlet {
         
         String accion = request.getParameter("accion");
         List<Auditoria> registros = new ArrayList<>();
+        //HttpSession session = request.getSession();
         
         switch(accion){
             case "listar":
-                dao = new AuditoriaDAO();
-                registros = dao.getRegistros();
-                request.setAttribute("registros", registros);
-                request.getRequestDispatcher("auditoria.jsp").forward(request, response);
-                break;
+                    dao = new AuditoriaDAO();
+                    registros = dao.getRegistros();
+                    request.setAttribute("registros", registros);
+                    request.getRequestDispatcher("auditoria.jsp").forward(request, response);
+                    break;
         }
     }
 

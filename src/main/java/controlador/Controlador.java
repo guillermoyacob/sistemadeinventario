@@ -3,6 +3,7 @@ package controlador;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -18,24 +19,46 @@ public class Controlador extends HttpServlet {
 
     ProductoDAO DaoProducto;
     
+    private List<Producto> FiltarPorCategoria(List<Producto> productos, String categoriaAFiltrar){
+
+        List<Producto> productosFiltrados = new ArrayList<>();
+        
+        for (Producto producto : productos){
+            if (Objects.equals(producto.getCategoria(), categoriaAFiltrar)){
+                productosFiltrados.add(producto);
+            }
+        }
+
+    return productosFiltrados;
+    }
+    
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {     
         
-        Auditoria registro;
         String accion = request.getParameter("accion");
         List<Producto> productos = new ArrayList<>();
         HttpSession session = request.getSession();
+        String nombreUsuario = (String) session.getAttribute("nombreUsuario");
+        Integer idUsuario = (Integer) session.getAttribute("idUsuario");
             
         switch (accion) {
             case "listar":
                 DaoProducto = new ProductoDAO();
                 productos = DaoProducto.getProductos();
-                request.setAttribute("Productos", productos);
-                request.getRequestDispatcher("listado.jsp").forward(request, response);
+                String categoriaAFiltrar = request.getParameter("txtCategoria");
+                if (Objects.equals(categoriaAFiltrar, "Todos")){
+                    request.setAttribute("Productos", productos);
+                    request.getRequestDispatcher("listadoProductos.jsp").forward(request, response);
+                } else {
+                    productos = FiltarPorCategoria(productos, categoriaAFiltrar);
+                    //request.setAttribute("txtCategoria", categoriaAFiltrar);
+                    request.setAttribute("Productos", productos);
+                    request.getRequestDispatcher("listadoProductos.jsp").forward(request, response);
+                }
                 break;
             case "nuevo":
-                request.getRequestDispatcher("add.jsp").forward(request, response);
+                request.getRequestDispatcher("addProducto.jsp").forward(request, response);
                 break;
             case "Agregar":
                 int resultado;
@@ -48,9 +71,7 @@ public class Controlador extends HttpServlet {
                 Producto producto = new Producto(nombre, descripcion, unidades, costo, precio, categoria);
                 resultado = DaoProducto.add(producto);
                 if (resultado != 0){
-                    String nombreUsuario = (String) session.getAttribute("nombreUsuario");
-                    Integer idUsuario = (Integer) session.getAttribute("idUsuario");
-                    registro = new Auditoria(nombre, descripcion, unidades, costo, precio, categoria, idUsuario, nombreUsuario, "Agregó");
+                    Auditoria registro = new Auditoria(nombre, descripcion, unidades, costo, precio, categoria, idUsuario, nombreUsuario, "Agregó");
                     AuditoriaDAO DaoAuditoria = new AuditoriaDAO();
                     DaoAuditoria.agregarRegistro(registro);
                     request.setAttribute("config", "alert alert-success");
@@ -66,19 +87,25 @@ public class Controlador extends HttpServlet {
                 int id = Integer.valueOf(request.getParameter("id"));
                 Producto p = DaoProducto.getId(id);
                 request.setAttribute("producto", p);
-                request.getRequestDispatcher("editar.jsp").forward(request, response);
+                request.getRequestDispatcher("editarProducto.jsp").forward(request, response);
                 break;
             case "Actualizar":
+                int idProducto = Integer.valueOf(request.getParameter("txtId"));
+                Producto productoAEditar = DaoProducto.getId(idProducto);
                 String nombre1 = request.getParameter("txtNombre");
                 String descripcion1 = request.getParameter("txtDescripcion");
                 Integer unidades1 = Integer.valueOf(request.getParameter("txtUnidades"));
                 Double costo1 = Double.valueOf(request.getParameter("txtCosto"));
                 Double precio1 = Double.valueOf(request.getParameter("txtPrecio"));
                 String categoria1 = request.getParameter("txtCategoria");
-                int idProducto = Integer.valueOf(request.getParameter("txtId"));
-                Producto prod = new Producto (idProducto, nombre1, descripcion1, unidades1, costo1, precio1, categoria1);
-                int respuesta = DaoProducto.update(prod);
+                Producto productoEditado = new Producto (idProducto, nombre1, descripcion1, unidades1, costo1, precio1, categoria1);
+                int respuesta = DaoProducto.update(productoEditado);
                 if (respuesta != 0){
+                    Auditoria registroAnterior = new Auditoria(productoAEditar.getNombre(), productoAEditar.getDescripcion(), productoAEditar.getUnidades(), productoAEditar.getCosto(), productoAEditar.getPrecio(), productoAEditar.getCategoria(), idUsuario, nombreUsuario, "Estado anterior");
+                    AuditoriaDAO DaoAuditoria = new AuditoriaDAO();
+                    DaoAuditoria.agregarRegistro(registroAnterior);
+                    Auditoria registro = new Auditoria(nombre1, descripcion1, unidades1, costo1, precio1, categoria1, idUsuario, nombreUsuario, "Actualizó");
+                    DaoAuditoria.agregarRegistro(registro);
                     request.setAttribute("config", "alert alert-success");
                     request.setAttribute("mensaje", "EL PRODUCTO SE HA ACTUALIZADO CON ÉXITO");
                     request.getRequestDispatcher("mensaje.jsp").forward(request, response);
@@ -89,9 +116,13 @@ public class Controlador extends HttpServlet {
                 }
                 break;
             case "Delete":
-                int idPerson = Integer.valueOf(request.getParameter("id"));
-                int res = DaoProducto.delete(idPerson);
+                int idProd = Integer.valueOf(request.getParameter("id"));
+                Producto productoABorrar = DaoProducto.getId(idProd);
+                int res = DaoProducto.delete(idProd);
                 if (res != 0){
+                    Auditoria registro = new Auditoria(productoABorrar.getNombre(), productoABorrar.getDescripcion(), productoABorrar.getUnidades(), productoABorrar.getCosto(), productoABorrar.getPrecio(), productoABorrar.getCategoria(), idUsuario, nombreUsuario, "Borró");
+                    AuditoriaDAO DaoAuditoria = new AuditoriaDAO();
+                    DaoAuditoria.agregarRegistro(registro);
                     request.setAttribute("config", "alert alert-warning");
                     request.setAttribute("mensaje", "EL PRODUCTO SE HA ELIMINADO CON ÉXITO");
                     request.getRequestDispatcher("mensaje.jsp").forward(request, response);
@@ -105,6 +136,8 @@ public class Controlador extends HttpServlet {
                 throw new AssertionError();
 
         }
+        
+
         
 
 //        response.setContentType("text/html;charset=UTF-8");

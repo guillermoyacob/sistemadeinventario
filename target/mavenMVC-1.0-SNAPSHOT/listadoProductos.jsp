@@ -13,7 +13,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Sistema de inventario - Listado de productos</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+        <link href="./Bootstrap/css/bootstrap.min.css" rel="stylesheet">
     </head>
     <body>
         
@@ -28,17 +28,34 @@
         
         <div class="container mt-4">
             <h1 class="h3">Sistema de inventario</h1>
-            <div class="d-flex">
-                <a class="btn btn-outline-primary" href="Controlador?accion=listar">Listar</a>
-                <a class="btn btn-outline-primary ms-2" href="Controlador?accion=nuevo">Agregar</a>
-                <a class="btn btn-outline-primary ms-2" href="cerrarSesion">SALIR</a>
+            <div class="d-flex justify-content-between">
+                <form class="d-flex" action="Controlador" method="POST">
+                    <select name="txtCategoria" class="btn btn-outline-primary ms-2">
+                        <option value="Todos">Todos</option>
+                        <option value="Alimentos">Alimentos</option>
+                        <option value="Bebidas">Bebidas</option>
+                        <option value="Limpieza">Limpieza</option>
+                    </select>
+                    <button type="submit" class="btn btn-outline-primary" value="listar" name="accion">Listar</button>
+                    <a class="btn btn-outline-primary ms-2" href="Controlador?accion=nuevo">Agregar</a>
+                    <a class="btn btn-outline-primary ms-2" href="cerrarSesion">SALIR</a>
+                </form>
+                <% if (usuario != null){
+                    if (usuario.getAdministrador() == 1){
+                %>
+                <div>
+                    <a class="btn btn-outline-danger" href="ControladorUsuarios?accion=listar">Usuarios</a>
+                    <a class="btn btn-outline-danger" href="Auditoria?accion=listar">Auditoria</a>
+                </div>
+                <% } } %>
+                
+                
             </div>
             <hr>
             <table class="table">
                 <thead>
                     <tr>
                         <th scope="col">#</th>
-                        <th scope="col">Identificador</th>
                         <th scope="col">Nombres</th>
                         <th scope="col">Descripción</th>
                         <th scope="col">Unidades</th>
@@ -51,8 +68,7 @@
                 <tbody class="table-group-divider">
                     <c:forEach var = "producto" items="${Productos}">
                         <tr>
-                            <th scope="row">1</th>
-                            <td>${producto.id}</td>
+                            <th scope="row">${producto.id}</th>
                             <td>${producto.nombre}</td>
                             <td>${producto.descripcion}</td>
                             <td>${producto.unidades}</td>
@@ -68,6 +84,6 @@
                 </tbody>
             </table>
         </div>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+        <script src="./Bootstrap/js/bootstrap.bundle.js"></script>
     </body>
 </html>
