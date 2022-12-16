@@ -13,6 +13,7 @@ import modelo.Usuario;
  */
 public interface InterfazUsuarioDAO {
     public List<Usuario> getUsuarios();
+    public Usuario getId(int id);
     public Usuario getUsuario(String usuario);
     public Usuario getUsuario(String usuario, String contrasenia);
     public int add(Usuario usuario);

@@ -17,10 +17,21 @@ public class Conexion {
 
     }
 
+    public static Connection Conectar() {
+        try {
+            Class.forName(driver);
+            conexion = (Connection) DriverManager.getConnection(url, user, password);
+        } catch (ClassNotFoundException ex) {
+            System.out.println("Algo ha salido mal");
+        } catch (SQLException ex) {
+            System.out.println("No se ha podido conectar");
+        }
+        return conexion;
+    }
+    
     public static void cerrarConexion() {
         try {
             conexion.close();
-            System.out.println("Se ha cerrado la conexion");
         } catch (SQLException ex) {
             System.out.println("No se ha podido cerrar la conexion");
         }
@@ -36,16 +47,4 @@ public class Conexion {
 //        return instancia;
 //    }
 
-    public static Connection Conectar() {
-        try {
-            Class.forName(driver);
-            conexion = (Connection) DriverManager.getConnection(url, user, password);
-            System.out.println("Se ha realizado la conexion!");
-        } catch (ClassNotFoundException ex) {
-            System.out.println("Algo ha salido mal");
-        } catch (SQLException ex) {
-            System.out.println("No se ha podido conectar");
-        }
-        return conexion;
-    }
 }

@@ -25,7 +25,7 @@
                 response.sendRedirect("index.jsp");
             }
             else if (usuario.getAdministrador() == 0){
-                response.sendRedirect("listado.jsp");
+                response.sendRedirect("listadoProductos.jsp");
             }
         %>
         

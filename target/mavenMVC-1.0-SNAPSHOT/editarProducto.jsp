@@ -4,6 +4,7 @@
     Author     : Guiye
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page import="modelo.Usuario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -60,9 +61,23 @@
                         <div class="form-group">
                             <label>CATEGORIA</label>
                             <select name="txtCategoria" class="form-control">
-                                <option value="Alimentos">Alimentos</option>
-                                <option value="Bebidas">Bebidas</option>
-                                <option value="Limpieza">Limpieza</option>
+                                <c:choose>
+                                    <c:when test="${producto.categoria == 'Alimentos'}">
+                                    <option selected="selected" value="Alimentos">Alimentos</option>
+                                    <option value="Bebidas">Bebidas</option>
+                                    <option value="Limpieza">Limpieza</option>
+                                    </c:when>
+                                    <c:when test="${producto.categoria == 'Bebidas'}">
+                                    <option value="Alimentos">Alimentos</option>
+                                    <option selected="selected" value="Bebidas">Bebidas</option>
+                                    <option value="Limpieza">Limpieza</option>
+                                    </c:when>
+                                    <c:when test="${producto.categoria == 'Limpieza'}">
+                                    <option value="Alimentos">Alimentos</option>
+                                    <option value="Bebidas">Bebidas</option>
+                                    <option selected="selected" value="Limpieza">Limpieza</option>
+                                    </c:when>
+                                </c:choose>  
                             </select>
                         </div>
                     </div>

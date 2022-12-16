@@ -67,8 +67,8 @@
                                 </c:otherwise>
                             </c:choose>
                             <td>
-                                <a href="ControladorUsuario?accion=Editar&id=${usuario.id}" class="btn btn-outline-warning">Editar</a>
-                                <a href="ControladorUsuario?accion=Delete&id=${usuario.id}" class="btn btn-outline-danger">Eliminar</a>
+                                <a href="ControladorUsuarios?accion=Editar&id=${usuario.id}" class="btn btn-outline-warning">Editar</a>
+                                <a href="ControladorUsuarios?accion=Delete&id=${usuario.id}" class="btn btn-outline-danger">Eliminar</a>
                             </td>
                         </tr>
                     </c:forEach>

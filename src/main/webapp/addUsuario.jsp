@@ -30,7 +30,7 @@
         %>
         
         <div class="container mt-4">
-            <form action="Controlador" method="POST">
+            <form action="ControladorUsuarios" method="POST">
                 <div class="card border-info mb-4" style="width: 18rem;">
                     <div class="card-header">
                         AGREGAR USUARIO

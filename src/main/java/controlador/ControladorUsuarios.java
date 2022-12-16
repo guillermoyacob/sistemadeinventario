@@ -52,7 +52,7 @@ public class ControladorUsuarios extends HttpServlet {
                 request.getRequestDispatcher("addUsuario.jsp").forward(request, response);
                 break;
             case "Agregar":
-                /*int resultado;
+                int resultado;
                 String nombre = request.getParameter("txtNombre");
                 String contrasenia = request.getParameter("txtContrasenia");
                 Integer administrador = Integer.valueOf(request.getParameter("txtAdministrador"));
@@ -66,11 +66,47 @@ public class ControladorUsuarios extends HttpServlet {
                     request.setAttribute("config", "alert alert-danger");
                     request.setAttribute("mensaje", "NO SE HA PODIDO GUARDAR EL USUARIO");
                     request.getRequestDispatcher("mensaje.jsp").forward(request, response);
-                }*/
-                String administrador = request.getParameter("txtAdministrador");
-                System.out.println(administrador);
+                }
                 break;
-
+                case "Editar":
+                int id = Integer.valueOf(request.getParameter("id"));
+                Usuario u = DaoUsuario.getId(id);
+                request.setAttribute("usuario", u);
+                request.getRequestDispatcher("editarUsuario.jsp").forward(request, response);
+                break;
+                case "Actualizar":
+                int idUsuario1 = Integer.valueOf(request.getParameter("txtId"));
+                String nombre1 = request.getParameter("txtNombre");
+                String contrasenia1 = request.getParameter("txtContrasenia");
+                Integer Administrador1 = Integer.valueOf(request.getParameter("txtAdministrador"));
+                Usuario usuario1 = new Usuario(idUsuario1, nombre1, contrasenia1, Administrador1);
+                int respuesta = DaoUsuario.update(usuario1);
+                if (respuesta != 0){
+                    request.setAttribute("config", "alert alert-success");
+                    request.setAttribute("mensaje", "EL PRODUCTO SE HA ACTUALIZADO CON ÉXITO");
+                    request.getRequestDispatcher("mensaje.jsp").forward(request, response);
+                }else{
+                    request.setAttribute("config", "alert alert-danger");
+                    request.setAttribute("mensaje", "NO SE HA PODIDO ACTUALIZAR EL PRODUCTO");
+                    request.getRequestDispatcher("mensaje.jsp").forward(request, response);
+                }
+                break;
+                case "Delete":
+                int idUsu = Integer.valueOf(request.getParameter("id"));
+                Usuario usuarioABorrar = DaoUsuario.getId(idUsu);
+                int res = DaoUsuario.delete(idUsu);
+                if (res != 0){
+                    request.setAttribute("config", "alert alert-warning");
+                    request.setAttribute("mensaje", "EL USUARIO SE HA ELIMINADO CON ÉXITO");
+                    request.getRequestDispatcher("mensaje.jsp").forward(request, response);
+                }else{
+                    request.setAttribute("config", "alert alert-danger");
+                    request.setAttribute("mensaje", "NO SE HA PODIDO ELIMINAR EL USUARIO");
+                    request.getRequestDispatcher("mensaje.jsp").forward(request, response);
+                }
+                break;
+            default:
+                throw new AssertionError();
         }
         
         /*response.setContentType("text/html;charset=UTF-8");

@@ -8,4 +8,5 @@ INSERT INTO usuario (nombre, contrasenia, administrador)
 VALUES
 	('admin', 'root', 1),
 	('guille', '1234', 0),
-	('luchi', 'dg1234', 0);
+	('luchi', 'dg1234', 0),
+	('mario', 'abcd', 1);

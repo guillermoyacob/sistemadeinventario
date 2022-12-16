@@ -4,6 +4,8 @@
     Author     : Guiye
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@page import="java.util.Objects"%>
 <%@page import="modelo.Usuario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -29,7 +31,7 @@
         %>
         
         <div class="container mt-4">
-            <form action="Controlador" method="POST">
+            <form action="ControladorUsuarios" method="POST">
                 <div class="card border-info mb-4" style="width: 18rem;">
                     <div class="card-header">
                         ACTUALIZAR USUARIO
@@ -50,13 +52,27 @@
                         </div>
                         <div class="form-group">
                             <label>ADMINISTRADOR</label>
-                            <input type="text" value="${usuario.administrador}" name="txtAdministrador" class="form-control">
+                            <label>CATEGORIA</label>
+                            
+                            <select name="txtAdministrador" class="form-control">
+                            <c:choose>
+                                <c:when test="${usuario.administrador == 0}">
+                                <option selected="selected" value="0">No</option>
+                                <option value="1">Si</option>
+                                </c:when>
+                                <c:otherwise>
+                                <option value="0">No</option>
+                                <option selected="selected" value="1">Si</option>  
+                                </c:otherwise>
+                            </c:choose>
+                            
+                            </select>
                         </div>
                         
                     </div>
                     <div class="card-footer">
                         <input type="submit" value="Actualizar" name="accion" class="btn btn-outline-success">
-                        <a href="Controlador?accion=listar" class="btn-link ms-2">Volver</a>
+                        <a href="ControladorUsuarios?accion=listar" class="btn-link ms-2">Volver</a>
                     </div>
                 </div>
             </form>

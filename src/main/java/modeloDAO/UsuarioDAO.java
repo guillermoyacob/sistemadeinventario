@@ -85,6 +85,29 @@ public class UsuarioDAO implements InterfazUsuarioDAO{
         
         return usuario;
     }
+    
+        @Override
+    public Usuario getId(int id) {
+        String sql = "SELECT * FROM usuario WHERE id = ?;";
+        Usuario usuario = new Usuario();
+        try {
+            PreparedStatement ps = Conexion.Conectar().prepareStatement(sql);
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                usuario.setId(rs.getInt(1));
+                usuario.setNombre(rs.getString(2));
+                usuario.setContrasenia(rs.getString(3));
+                usuario.setAdministrador(rs.getInt(4));
+            }
+        } catch (SQLException e) {
+            System.err.println("Error: " + e);
+        }
+        
+        Conexion.cerrarConexion();
+        
+        return usuario;
+    }
 
     @Override
     public int add(Usuario usuario) {
@@ -108,12 +131,14 @@ public class UsuarioDAO implements InterfazUsuarioDAO{
     @Override
     public int update(Usuario usuario) {
         int resultado = 0;
-        String sql = "UPDATE usuario SET nombre = ?, contrasenia = ? WHERE id = ?;";
+        String sql = "UPDATE usuario SET nombre = ?, contrasenia = ?, administrador = ? WHERE id = ?;";
         try {
             PreparedStatement ps = Conexion.Conectar().prepareStatement(sql);
             ps.setString(1, usuario.getNombre());
             ps.setString(2, usuario.getContrasenia());
-            ps.setInt(3, usuario.getId());
+            ps.setInt(3, usuario.getAdministrador());
+            ps.setInt(4, usuario.getId());
+            resultado = ps.executeUpdate();
         } catch (Exception e) {
             System.err.println("Error al agregar en la base de datos" + e);
         }

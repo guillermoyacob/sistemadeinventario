@@ -6,6 +6,7 @@ package controlador;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import javax.servlet.ServletException;
@@ -35,6 +36,7 @@ public class ControladorAuditoria extends HttpServlet {
             case "listar":
                     dao = new AuditoriaDAO();
                     registros = dao.getRegistros();
+                    Collections.reverse(registros);
                     request.setAttribute("registros", registros);
                     request.getRequestDispatcher("auditoria.jsp").forward(request, response);
                     break;

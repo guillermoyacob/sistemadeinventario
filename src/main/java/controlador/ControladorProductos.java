@@ -2,6 +2,7 @@ package controlador;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import javax.servlet.ServletException;
@@ -15,7 +16,7 @@ import modelo.Usuario;
 import modeloDAO.AuditoriaDAO;
 import modeloDAO.ProductoDAO;
 
-public class Controlador extends HttpServlet {
+public class ControladorProductos extends HttpServlet {
 
     ProductoDAO DaoProducto;
     
@@ -46,16 +47,16 @@ public class Controlador extends HttpServlet {
             case "listar":
                 DaoProducto = new ProductoDAO();
                 productos = DaoProducto.getProductos();
+                Collections.reverse(productos);
                 String categoriaAFiltrar = request.getParameter("txtCategoria");
                 if (Objects.equals(categoriaAFiltrar, "Todos")){
                     request.setAttribute("Productos", productos);
-                    request.getRequestDispatcher("listadoProductos.jsp").forward(request, response);
                 } else {
                     productos = FiltarPorCategoria(productos, categoriaAFiltrar);
                     //request.setAttribute("txtCategoria", categoriaAFiltrar);
                     request.setAttribute("Productos", productos);
-                    request.getRequestDispatcher("listadoProductos.jsp").forward(request, response);
                 }
+                    request.getRequestDispatcher("listadoProductos.jsp").forward(request, response);
                 break;
             case "nuevo":
                 request.getRequestDispatcher("addProducto.jsp").forward(request, response);
